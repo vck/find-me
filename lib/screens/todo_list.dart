@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:todo_app/screens/add_page.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+
+
 
 class TodoListPage extends StatefulWidget {
   const TodoListPage({Key? key}) : super(key: key);
@@ -9,6 +13,15 @@ class TodoListPage extends StatefulWidget {
 }
 
 class _TodoListPageState extends State<TodoListPage> {
+
+  List items = [];
+
+  @override
+  void initState() {
+    super.initState();
+    fetchTodos();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -21,9 +34,20 @@ class _TodoListPageState extends State<TodoListPage> {
         },
         label: Text("Add Todo"), 
       ),
-      body: const Center(
-        child: Text('Todo List'),
-      ),
+      body: RefreshIndicator(
+        onRefresh: fetchTodos,
+        child: ListView.builder(
+        itemCount: items.length,
+        itemBuilder: (context, index) {
+          final item = items[index];
+          return ListTile(
+            leading: CircleAvatar(child: Text('${index + 1}')),
+            title: Text(item['text']),
+            subtitle: Text(item['desc']),
+          );
+        },
+      )
+      )
     );
   }
 
@@ -31,4 +55,23 @@ class _TodoListPageState extends State<TodoListPage> {
     final route = MaterialPageRoute(builder: (context) => AddTodoPage());
     Navigator.push(context, route);
   }
+
+
+  Future<void> fetchTodos() async {
+    final response = await http.get(Uri.parse('http://localhost:5000/items'));
+
+    if(response.statusCode == 200) {
+      final todos = jsonDecode(response.body) as Map;
+      final json = todos['items'] as List;
+      print(json);
+
+        setState(() {
+            items = json;
+        }); 
+
+    } else {
+      print('Failed to fetch todos');
+    }
+  }
+
 }

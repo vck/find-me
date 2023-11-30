@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:todo_app/screens/todo_list.dart';
+
 
 
 class AddTodoPage extends StatefulWidget {
@@ -72,8 +74,38 @@ class _AddTodoPageState extends State<AddTodoPage> {
 
         print(response.statusCode);
         print(response.body);
+
+        if(response.statusCode == 201){
+            _titleController.text = '';
+            _descriptionController.text = '';
+            showSuccessMessage();
+        }else{
+            showFailedMessage();
+            print("Failed to add todo");
+        }
     }
 
+    void showSuccessMessage(){
+        final snackBar = SnackBar(
+            content: const Text('Todo Added Successfully'),
+            backgroundColor: Colors.green,
+        );
 
+        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    }
+
+    void showFailedMessage(){
+        final snackBar = SnackBar(
+            content: const Text('Failed to Add Todo'),
+            backgroundColor: Colors.green,
+        );
+
+        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    }
+
+    void navigateToMainPage() {
+        final route = MaterialPageRoute(builder: (context) => TodoListPage());
+        Navigator.push(context, route);
+  }
     
 }
