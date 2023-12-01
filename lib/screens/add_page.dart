@@ -89,6 +89,7 @@ class _AddTodoPageState extends State<AddTodoPage> {
         final snackBar = SnackBar(
             content: const Text('Todo Added Successfully'),
             backgroundColor: Colors.green,
+            duration: const Duration(seconds: 1),
         );
 
         ScaffoldMessenger.of(context).showSnackBar(snackBar);
@@ -98,6 +99,7 @@ class _AddTodoPageState extends State<AddTodoPage> {
         final snackBar = SnackBar(
             content: const Text('Failed to Add Todo'),
             backgroundColor: Colors.green,
+            duration: const Duration(seconds: 1),
         );
 
         ScaffoldMessenger.of(context).showSnackBar(snackBar);

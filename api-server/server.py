@@ -76,5 +76,13 @@ def get_todo_by_id(todo_id):
     return jsonify({'id': todo.id, 'text': todo.text, 'desc': todo.description, 'status': int(todo.status)})
 
 
+# delete todo by id
+@app.route('/items/<string:todo_id>', methods=['DELETE'])
+def delete_todo_by_id(todo_id):
+    todo = Todo.query.get(todo_id)
+    db.session.delete(todo)
+    db.session.commit()
+    return jsonify({'id': todo.id, 'text': todo.text, 'desc': todo.description, 'status': int(todo.status)})
+
 if __name__ == '__main__':
     app.run(debug=True)
