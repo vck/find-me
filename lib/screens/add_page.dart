@@ -6,7 +6,11 @@ import 'package:todo_app/screens/todo_list.dart';
 
 
 class AddTodoPage extends StatefulWidget {
-    const AddTodoPage({Key? key}) : super(key: key);
+    final Map? todo;
+    const AddTodoPage({
+        super.key,
+        this.todo
+    });
 
     @override
     State<AddTodoPage> createState() => _AddTodoPageState();   

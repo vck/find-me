@@ -6,7 +6,9 @@ import 'dart:convert';
 
 
 class TodoListPage extends StatefulWidget {
+
   const TodoListPage({Key? key}) : super(key: key);
+
 
   @override
   State<TodoListPage> createState() => _TodoListPageState();
@@ -59,7 +61,7 @@ class _TodoListPageState extends State<TodoListPage> {
                 onSelected: (value) {
                   if(value == 'edit') {
                     print('Edit');
-                    //navigateToEditPage(id);
+                    navigateToEditPage(item);
                   } else if(value == 'delete') {
                     print('Delete');
                     deleteById(id);
@@ -78,6 +80,13 @@ class _TodoListPageState extends State<TodoListPage> {
     await Navigator.push(context, route);
     fetchTodos();
   }
+
+  Future<void> navigateToEditPage(Map item) async {
+    final route = MaterialPageRoute(builder: (context) => AddTodoPage());
+    await Navigator.push(context, route);
+    fetchTodos();
+  }
+
 
 
   Future<void> deleteById(String id) async {
